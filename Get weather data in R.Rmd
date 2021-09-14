@@ -1,0 +1,67 @@
+---
+title: "User guide: get weather data in R"
+output: 
+  html_notebook:
+    theme: sandstone
+    highlight: kate
+author: 'Diabb Zegpi D.'
+editor_options: 
+  chunk_output_type: inline
+---
+
+<style>
+  p, ol, li {
+    font-size: 12pt;
+  }
+
+  a {
+    color: #03a1a1
+  }
+
+  pre.sourceCode {
+    color: rgb(31, 28, 27);
+    background-color: #eeeeee;
+  }
+
+  .sourceCode {
+    font-family: 'Fira Mono';
+    font-size: 10pt;
+  }
+</style>
+
+<img src='C:/Users/Diabb/Downloads/weather leaves.jpg' />
+
+This (summarised) user guide makes use of the awesome `riem` package, that sends requests to the [Iowa Environment Mesonet](https://mesonet.agron.iastate.edu/request/download.phtml?network=IN__ASOS) web page to get weather data, for free. A comprehensive guide to the `riem` package can be found in its [documentation page](https://docs.ropensci.org/riem/articles/articles/riem.html).
+
+The workflow to get weather data follows the following steps:
+
+1. Get available networks
+2. Get available stations for one network
+3. Get measures for one station
+
+## 1. Get available networks
+
+```{r}
+library(riem)
+library(tidyverse)
+riem_networks() %>% filter(str_detect(name, '[Cc]hile'))
+```
+
+## 2. Get available stations for one network
+
+```{r}
+riem_stations(network = 'CL__ASOS')
+```
+
+## 3. Get measures for one station
+
+The full list of measure descriptions can be found in the [official website](https://docs.ropensci.org/riem/articles/articles/riem.html#get-measures-for-one-station).
+
+```{r}
+measures <- riem_measures(
+  station = 'SCGE',
+  date_start = '2000-01-01',
+  date_end = '2019-12-31'
+)
+head(measures)
+```
